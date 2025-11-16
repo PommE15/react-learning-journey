@@ -2,21 +2,23 @@ import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 import { InteractionDebouncer } from "../../utils/debouncer";
 import { VoronoiSelection, type VoronoiElement } from "./voronoi";
-import {
-  // userCourses,
-  type NetworkGraphProps,
-  type CourseNode,
-  type CourseLink,
-  type CourseCategory,
+import type {
+  NetworkGraphProps,
+  CourseNode,
+  CourseLink,
+  CourseCategory,
 } from "../data/types";
+import { userCourses } from "../data/courses-network";
+import { renderNodeCircles } from "./svg-circles";
+import { renderNodeTexts } from "./svg-texts";
+import { renderArrowMarker } from "./svg-marker-arrow";
+import { renderLinks } from "./svg-lines";
+import { generateRecommended } from "../data/users";
 
 // Graph dimensions and layout constants
 const GRAPH_WIDTH = 1024;
-const GRAPH_HEIGHT = 500;
+const GRAPH_HEIGHT = 510;
 const GROUPED_SPACING = 32;
-const TEXT_ROTATION = -30;
-const TEXT_Y_OFFSET = -14;
-const NODE_RADIUS = 5;
 const NODE_STROKE_WIDTH = 5;
 const DEFAULT_LINK_LENGTH = 100;
 const DEFAULT_LINK_WIDTH = 1;
@@ -34,6 +36,8 @@ const ANIMATION_DELAY = 800;
 const RESIZE_THRESHOLD = 1;
 const HOVER_ENTER_DELAY = 10;
 const HOVER_LEAVE_DELAY = 100;
+
+const { completed, inProgress } = userCourses;
 
 const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
   // Refs for SVG element and container div
@@ -83,32 +87,26 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
     // Create path description element
     const textElement = document.getElementById("path-description");
 
+    // Create debouncers with appropriate delays - MOVED UP before other functions that use it
+    const hoverDebouncer = new InteractionDebouncer<CourseNode | CourseLink>(
+      HOVER_ENTER_DELAY,
+      HOVER_LEAVE_DELAY,
+    );
+
     // Set up SVG dimensions and viewBox for proper scaling
     const svgSelection = d3
       .select(svg)
       .attr("width", width)
       .attr("height", height)
-      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("viewBox", `${width / 15} 0 ${width} ${height}`)
       .on("mouseleave", () => {
         hoverDebouncer.onLeave(() => {
           clearHighlight();
           applyCategoryHighlight();
         });
       });
-
     // Define arrow marker
-    svgSelection
-      .append("marker")
-      .attr("id", "arrow")
-      .attr("viewBox", "0 0 10 10")
-      .attr("refX", 15) // how far the arrow sits past the line end
-      .attr("refY", 5)
-      .attr("markerWidth", 4)
-      .attr("markerHeight", 4)
-      .attr("orient", "auto")
-      .append("path")
-      .attr("d", "M 0 0 L 10 5 L 0 10 z")
-      .attr("fill", "var(--color-muted-foreground)"); // or dynamic color
+    renderArrowMarker(svgSelection);
 
     // Create Voronoi selection manager
     const voronoiSelection = new VoronoiSelection(svgSelection, width, height);
@@ -118,17 +116,14 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
     const linkGroup = container.append("g");
     const nodeGroup = container.append("g");
 
+    // TODO: add recommended course
+
     // Create link elements (lines connecting nodes) - NO hover events
-    const linkElements = linkGroup
-      .selectAll("line")
-      .data(links)
-      .enter()
-      .append("line")
-      .attr("stroke", "var(--color-muted-foreground)")
-      .attr("stroke-width", (d) => d.width || DEFAULT_LINK_WIDTH)
-      .attr("marker-end", (d) => (d.length != 1 ? "url(#arrow)" : null))
-      .style("transition", "all 0.5s ease")
-      .style("cursor", "pointer");
+    const recommended = generateRecommended(completed, inProgress);
+    const linkElements = renderLinks(
+      linkGroup,
+      links /* , inProgress, recommended*/,
+    );
 
     // Create node elements (group containers for circles and text) - NO hover events
     const nodeElements = nodeGroup
@@ -138,45 +133,27 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
       .append("g");
 
     // Add circles to nodes with dynamic sizing and group-based colors
-    nodeElements
-      .append("circle")
-      .attr("r", (d) =>
-        d.id.includes("p") ? NODE_RADIUS + d.size * 1.5 : NODE_RADIUS,
-      )
-      .attr("fill", "#eee")
-      .attr("stroke", (d) => paths[d.path[0] - 1].color) // id is index+1
-      .attr("stroke-width", NODE_STROKE_WIDTH)
-      .style("display", (d) => (d.hasChild ? "none" : "block"))
-      .style("pointer-events", "none")
-      .style("transition", "all 0.8s ease");
-
+    renderNodeCircles(nodeElements, completed, inProgress, paths); // Add labels to nodes positioned above the circles
     // Add labels to nodes positioned above the circles
-    nodeElements
-      .append("text")
-      .attr("dy", (d) =>
-        d.id.includes("c") ? TEXT_Y_OFFSET - d.size * 2 : -TEXT_Y_OFFSET * 2,
-      )
-      .attr("text-anchor", (d) => (d.id.includes("c") ? "" : "middle"))
-      .attr("transform", (d) =>
-        d.id.includes("c") ? `rotate(${TEXT_ROTATION})` : "rotate(0)",
-      )
-      .attr(
-        "class",
-        (d) =>
-          `svg-text ${d.id.includes("c") ? "text-xs" : ""} ${d.hasChild ? "opacity-50" : ""}`,
-      )
-      .style("pointer-events", "none")
-      .text((d) =>
-        d.hasChild
-          ? "[ " + d.id.toUpperCase() + ". " + d.title + " ]"
-          : d.id.toUpperCase() + ". " + d.title,
-      );
+    renderNodeTexts(nodeElements, completed, inProgress, recommended);
 
-    // Create debouncers with appropriate delays
-    const hoverDebouncer = new InteractionDebouncer<CourseNode | CourseLink>(
-      HOVER_ENTER_DELAY,
-      HOVER_LEAVE_DELAY,
-    );
+    // Clear highlight function - MOVED UP to be available for other functions
+    const clearHighlight = (isDim: boolean = false) => {
+      // Hide path's description text
+      if (textElement) {
+        textElement.classList.remove("opacity-100");
+        textElement.classList.add("opacity-0");
+      }
+
+      // Reset all nodes and links to normal state
+      nodeElements
+        .style("opacity", isDim ? DIMMED_OPACITY / 2 : DEFAULT_OPACITY)
+        .select("circle")
+        .attr("stroke-width", NODE_STROKE_WIDTH);
+      linkElements
+        .style("opacity", isDim ? DIMMED_OPACITY : DEFAULT_OPACITY)
+        .attr("stroke-width", (link) => link.width || DEFAULT_LINK_WIDTH);
+    };
 
     // Hightlight path (separated from debouncing logic)
     const applyHighlightPath = (
@@ -217,22 +194,6 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
             ? (link.width || DEFAULT_LINK_WIDTH) * WIDTH_MULTIPLIER
             : link.width || DEFAULT_LINK_WIDTH,
         );
-    };
-    const clearHighlight = (isDim: boolean = false) => {
-      // Hide path's description text
-      if (textElement) {
-        textElement.classList.remove("opacity-100");
-        textElement.classList.add("opacity-0");
-      }
-
-      // Reset all nodes and links to normal state
-      nodeElements
-        .style("opacity", isDim ? DIMMED_OPACITY / 2 : DEFAULT_OPACITY)
-        .select("circle")
-        .attr("stroke-width", NODE_STROKE_WIDTH);
-      linkElements
-        .style("opacity", isDim ? DIMMED_OPACITY : DEFAULT_OPACITY)
-        .attr("stroke-width", (link) => link.width || DEFAULT_LINK_WIDTH);
     };
 
     const applyCategoryHighlight = () => {

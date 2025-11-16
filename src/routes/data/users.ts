@@ -1,6 +1,50 @@
 import { dummyCourses } from "../courses/courses-data";
 import type { UserCourse, UserCourseRecommended, UserData } from "./types";
+import { courseNodes } from "./courses-network";
 
+export const generateRecommended = (
+  completed: string[],
+  inProgress: string[],
+) => {
+  // Get paths that have both completed and inProgress courses
+  const completedPaths = new Set<number>();
+  const inProgressPaths = new Set<number>();
+
+  // Collect all paths from completed courses
+  completed.forEach((courseId) => {
+    const node = courseNodes.find((n) => n.id === courseId);
+    if (node) {
+      node.path.forEach((pathId) => completedPaths.add(pathId));
+    }
+  });
+
+  // Collect all paths from inProgress courses
+  inProgress.forEach((courseId) => {
+    const node = courseNodes.find((n) => n.id === courseId);
+    if (node) {
+      node.path.forEach((pathId) => inProgressPaths.add(pathId));
+    }
+  });
+
+  // Find intersection of paths (paths that have both completed and inProgress courses)
+  const sharedPaths = [...completedPaths].filter((path) =>
+    inProgressPaths.has(path),
+  );
+
+  // Get recommended courses: nodes in shared paths that aren't completed or inProgress
+  const recommended = courseNodes
+    .filter(
+      (node) =>
+        node.path.some((pathId) => sharedPaths.includes(pathId)) &&
+        !completed.includes(node.id) &&
+        !inProgress.includes(node.id),
+    )
+    .map((node) => node.id);
+
+  return recommended;
+};
+
+// --- Old version ---
 // --- Helpers ---
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;

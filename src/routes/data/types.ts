@@ -52,11 +52,13 @@ export interface CourseNode extends d3.SimulationNodeDatum {
 }
 
 export interface CourseLink extends d3.SimulationLinkDatum<CourseNode> {
+  id: string;
   source: string | CourseNode;
   target: string | CourseNode;
   path: number[];
   length?: number;
   width?: number;
+  flag?: boolean;
 }
 
 export type CourseCategory = {

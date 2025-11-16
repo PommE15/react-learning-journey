@@ -129,45 +129,78 @@ export const courseNodes: CourseNode[] = [
 
 export const courseLinks: CourseLink[] = [
   // 1. Intro to dev programming
-  // { source: "p1", target: "c20", width: 2, path: [2] },
-  // { source: "p1", target: "p3", width: 2, path: [3] },
-  // { source: "p1", target: "p6", width: 2, path: [6] },
-  // { source: "p1", target: "p7", width: 2, path: [1] },
-  { source: "c10", target: "c11", length: 1, path: [1, 2, 3, 6] },
-  { source: "c11", target: "c12", length: 1, path: [1, 2, 3, 6] },
-  { source: "c12", target: "c13", length: 1, path: [1, 2, 3, 6] },
-  { source: "c13", target: "c20", width: 2, path: [2] },
-  { source: "c13", target: "p3", width: 2, path: [3] },
-  { source: "c13", target: "p6", width: 2, path: [6] },
-  { source: "c13", target: "p7", width: 2, path: [1] },
+  // { id: "l1", source: "p1", target: "c20", width: 2, path: [2] },
+  // { id: "l2", source: "p1", target: "p3", width: 2, path: [3] },
+  // { id: "l3", source: "p1", target: "p6", width: 2, path: [6] },
+  // { id: "l4", source: "p1", target: "p7", width: 2, path: [1] },
+
+  { id: "l5", source: "c10", target: "c11", length: 1, path: [1, 2, 3, 6] },
+  { id: "l6", source: "c11", target: "c12", length: 1, path: [1, 2, 3, 6] },
+  {
+    id: "l7",
+    source: "c12",
+    target: "c13",
+    length: 1,
+    path: [1, 2, 3, 6],
+  },
+
+  { id: "l8", source: "c13", target: "c20", width: 2, path: [2] },
+  { id: "l9", source: "c13", target: "p3", width: 2, path: [3] },
+  { id: "l10", source: "c13", target: "p6", width: 2, path: [6] },
+  { id: "l11", source: "c13", target: "p7", width: 2, path: [1] },
+
   // 6: Data Structures
-  { source: "c23", target: "p7", width: 2, path: [2] },
-  { source: "p3", target: "p7", width: 2, path: [3] },
-  { source: "p4", target: "p7", width: 2, path: [4] },
-  { source: "p5", target: "p7", width: 2, path: [5] },
-  // { source: "p7", target: "p9", width: 2, path: [2] },
-  { source: "p7", target: "c90", length: 1, path: [2] },
+  { id: "l12", source: "c23", target: "p7", width: 2, path: [2], flag: true },
+  { id: "l13", source: "p3", target: "p7", width: 2, path: [3] },
+  { id: "l14", source: "p4", target: "p7", width: 2, path: [4] },
+  { id: "l15", source: "p5", target: "p7", width: 2, path: [5] },
+  // { id: "l16", source: "p7", target: "p9", width: 2, path: [2] },
+
+  { id: "l17", source: "p7", target: "c90", length: 1, path: [2], flag: true },
+
   // others
-  { source: "p6", target: "p8", width: 2, path: [6] },
-  // 2: Fontend and 9: React
-  { source: "c20", target: "c21", length: 1, path: [2] },
-  { source: "c21", target: "c22", length: 1, path: [2] },
-  { source: "c22", target: "c23", length: 1, path: [2] },
-  { source: "c90", target: "c91", length: 1, path: [2] },
-  { source: "c91", target: "c91", length: 1, path: [2] },
-  { source: "c92", target: "c91", length: 1, path: [2] },
-  { source: "c80", target: "c81", length: 1, path: [6, 2] },
-  { source: "c81", target: "c82", length: 1, path: [6, 2] },
-  { source: "c22", target: "c80", width: 1.5, path: [2] },
-  // { source: "c12", target: "p9", width: 0.5, path: [2] },
+  { id: "l18", source: "p6", target: "p8", width: 2, path: [6] },
+
+  // 2: Frontend and 9: React
+  { id: "l19", source: "c20", target: "c21", length: 1, path: [2] },
+  { id: "l20", source: "c21", target: "c22", length: 1, path: [2] },
+  { id: "l21", source: "c22", target: "c23", length: 1, path: [2] },
+
+  { id: "l22", source: "c90", target: "c91", length: 1, path: [2], flag: true },
+  { id: "l23", source: "c91", target: "c92", length: 1, path: [2], flag: true },
+
+  { id: "l24", source: "c80", target: "c81", length: 1, path: [6, 2] },
+  {
+    id: "l25",
+    source: "c81",
+    target: "c82",
+    length: 1,
+    path: [6, 2],
+    flag: true,
+  },
+
+  { id: "l26", source: "c22", target: "c80", width: 1.5, path: [2] },
+
+  // { id: "l27", source: "c12", target: "p9", width: 0.5, path: [2] },
 ];
 
 export const userCourses: {
   completed: string[];
   inProgress: string[];
-  recommended: string[];
+  recommended?: string[];
 } = {
-  completed: ["c10", "c11", "c12", "c13", "c20", "c21", "c22", "c80", "c81"],
-  inProgress: [],
-  recommended: [],
+  completed: [
+    "c10",
+    "c11",
+    "c12",
+    "c13",
+    "c20",
+    "c21",
+    "c22",
+    "c80",
+    "p1",
+    "p2",
+    "p8",
+  ],
+  inProgress: ["c23", "c81"],
 };
