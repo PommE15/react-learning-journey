@@ -136,7 +136,7 @@
   }
   /* Section headings (Continue Learning, Completed, etc.) */
   h2 {
-    @apply text-2xl md:text-3xl font-semibold mb-4;
+    @apply text-xl md:text-2xl font-semibold mb-4;
   }
   /* Course/Card titles */
   h3 {

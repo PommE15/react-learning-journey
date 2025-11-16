@@ -77,3 +77,9 @@ export type NetworkGraphProps = {
   };
   selectedCategories: string[];
 };
+
+export type UserCourses = {
+  completed: string[];
+  inProgress: string[];
+  recommended?: string[];
+};

@@ -6,18 +6,18 @@ import { CardProgress } from "./card-progess";
 
 interface CourseCardProps {
   course: Course;
-  userCourse: UserCourse;
+  userCourse?: UserCourse;
   selectedCategories: string[];
 }
 
 export function CourseCardProgress({
   course,
-  userCourse,
+  userCourse = undefined,
   selectedCategories,
 }: CourseCardProps) {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="-my-2">
         <h3>{course.title}</h3>
         <CourseCardDescription
           course={course}

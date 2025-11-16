@@ -1,35 +1,24 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion } from "@/components/ui/accordion";
+import { arraysHaveCommonItem } from "@/src/utils/helper";
 import { Book, Clock } from "lucide-react";
 import React from "react";
 import { Link, useLoaderData, useSearchParams } from "react-router";
-import { CategoryFilter } from "../components/category-filter";
+import NetworkGraph from "../charts/network";
 import { CourseCardCompleted } from "../components/card/course-card-completed";
 import { CourseCardProgress } from "../components/card/course-card-progess";
 import { CourseCardRecommend } from "../components/card/course-card-recommended";
-import type {
-  Course,
-  CourseCategory,
-  CourseLink,
-  CourseNode,
-  UserCourse,
-} from "../data/types";
-import type { DashboardLoaderData } from "./dashboard-route";
-import { formatTime } from "@/src/utils/formats";
-import NetworkGraph from "../charts/network";
+import { CategoryFilter } from "../components/category-filter";
+import { SectionAccordion } from "../components/section-accordion";
 import {
   courseCategories,
   courseLinks,
   courseNodes,
 } from "../data/courses-network";
+import type { CourseCategory, CourseLink, CourseNode } from "../data/types";
+import type { DashboardLoaderData } from "./dashboard-route";
 
 export function Dashboard() {
   const {
-    user,
     completedCourses,
     inProgressCourses,
     recommendedCourses,
@@ -47,10 +36,8 @@ export function Dashboard() {
     paths: courseCategories,
   };
 
-  const [, setSearchParams] = useSearchParams();
-
-  const totalTimeSpent = [...user.completed, ...user.in_progress].reduce(
-    (total, course) => total + course.total_time_spent,
+  const totalTimeSpent = completedCourses.reduce(
+    (acc, course) => acc + course.hours,
     0,
   );
 
@@ -61,6 +48,7 @@ export function Dashboard() {
   ]);
 
   // URL update helper
+  const [, setSearchParams] = useSearchParams();
   const updateSearchParams = React.useCallback(
     (updates: Record<string, string | null>) => {
       setSearchParams(
@@ -74,7 +62,6 @@ export function Dashboard() {
               newParams.set(key, value);
             }
           });
-
           return newParams;
         },
         { replace: true },
@@ -98,23 +85,15 @@ export function Dashboard() {
   // Clear all filters
   const hasActiveFilters = filters.selectedCategories.length > 0;
 
-  // Get user courses that match current filters (for counting)
-  const getFilteredUserCourses = (
-    userCourses: UserCourse[],
-    allCourses: Course[],
-  ) => {
-    return userCourses.filter((userCourse) =>
-      allCourses.some((course) => course.id === userCourse.id),
-    );
-  };
-
-  const filteredInProgressUser = getFilteredUserCourses(
-    user.in_progress,
-    inProgressCourses,
+  const filteredCategories = filters.selectedCategories;
+  const filteredCompletedCourses = completedCourses.filter((course) =>
+    arraysHaveCommonItem(course.categories, filteredCategories),
   );
-  const filteredCompletedUser = getFilteredUserCourses(
-    user.completed,
-    completedCourses,
+  const filteredInProgressCourses = inProgressCourses.filter((course) =>
+    arraysHaveCommonItem(course.categories, filteredCategories),
+  );
+  const filteredRecommendedCourses = recommendedCourses.filter((course) =>
+    arraysHaveCommonItem(course.categories, filteredCategories),
   );
 
   return (
@@ -130,7 +109,7 @@ export function Dashboard() {
 
       {/* Header with Stats */}
       <h1 className="sm:mb-8">
-        | Hi, I'm ID {user.user_id}. This is my Learning Journey
+        | I'm on my <u>Frontend</u> learning way
       </h1>
 
       {/*<div className="p3">
@@ -157,9 +136,11 @@ export function Dashboard() {
         />
         <div className="flex items-center gap-2 text-sm text-muted-foreground -ml-0.5 mt-3">
           <Book className="size-4" />
-          <span>{user.completed.length + user.in_progress.length} courses</span>
+          <span>
+            {completedCourses.length + inProgressCourses.length} courses
+          </span>
           <Clock className="ml-2 size-4" />
-          <span>{formatTime(totalTimeSpent)} total</span>
+          <span>{totalTimeSpent} hours spent</span>
         </div>
       </div>
 
@@ -171,120 +152,63 @@ export function Dashboard() {
         onValueChange={setOpenSections}
         className="w-full"
       >
-        <AccordionItem value="completed">
-          <AccordionTrigger>
-            <h2>
-              Completed ({filteredCompletedUser.length}
-              {hasActiveFilters && ` of ${user.completed.length}`})
-            </h2>
-          </AccordionTrigger>
-          <AccordionContent className="pb-16">
-            {completedCourses.length === 0 && hasActiveFilters ? (
-              <div className="py-8 text-muted-foreground">
-                <p>No completed courses match your selected categories.</p>
-              </div>
-            ) : completedCourses.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-                {completedCourses.map((course) => {
-                  const userCourse = filteredCompletedUser.find(
-                    (uc) => uc.id === course.id,
-                  );
-                  if (!userCourse) return null;
+        {/* Completed */}
+        <SectionAccordion
+          id="completed"
+          title="Completed"
+          items={filteredCompletedCourses}
+          total={completedCourses.length}
+          hasActiveFilters={hasActiveFilters}
+          render={(course) => (
+            <CourseCardCompleted
+              key={course.id}
+              course={course}
+              selectedCategories={filters.selectedCategories}
+            />
+          )}
+        />
 
-                  return (
-                    <CourseCardCompleted
-                      key={course.id}
-                      course={course}
-                      userCourse={userCourse}
-                      selectedCategories={filters.selectedCategories}
-                    />
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="py-8 text-muted-foreground">
-                <p>No completed courses yet</p>
-              </div>
-            )}
-          </AccordionContent>
-        </AccordionItem>
+        {/* In Progress */}
+        <SectionAccordion
+          id="in-progress"
+          title="Continue Learning"
+          items={filteredInProgressCourses}
+          total={inProgressCourses.length}
+          hasActiveFilters={hasActiveFilters}
+          render={(course) => (
+            <CourseCardProgress
+              key={course.id}
+              course={course}
+              selectedCategories={filters.selectedCategories}
+            />
+          )}
+        />
 
-        <AccordionItem value="in-progress">
-          <AccordionTrigger>
-            <h2>
-              Continue Learning ({filteredInProgressUser.length}
-              {hasActiveFilters && ` of ${user.in_progress.length}`})
-            </h2>
-          </AccordionTrigger>
-          <AccordionContent className="pb-16">
-            {inProgressCourses.length === 0 && hasActiveFilters ? (
-              <div className="py-8 text-muted-foreground">
-                <p>No in-progress courses match your selected categories.</p>
-              </div>
-            ) : inProgressCourses.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-                {inProgressCourses.map((course) => {
-                  const userCourse = filteredInProgressUser.find(
-                    (uc) => uc.id === course.id,
-                  );
-                  if (!userCourse) return null;
-                  return (
-                    <CourseCardProgress
-                      key={course.id}
-                      course={course}
-                      userCourse={userCourse}
-                      selectedCategories={filters.selectedCategories}
-                    />
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="py-8 text-muted-foreground">
-                <p>No courses in progress</p>
-              </div>
-            )}
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Recommended courses */}
-        <AccordionItem value="recommended">
-          <AccordionTrigger>
-            <h2>
-              Recommended for You ({recommendedCourses.length}
-              {hasActiveFilters && ` of ${user.recommended.length}`})
-            </h2>
-          </AccordionTrigger>
-          <AccordionContent>
-            {recommendedCourses.length === 0 && hasActiveFilters ? (
-              <div className="text-center py-8 text-muted-foreground">
-                <p>No recommended courses match your selected categories.</p>
-              </div>
-            ) : recommendedCourses.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-                {recommendedCourses.map((course) => {
-                  const recommendation = user.recommended.find(
-                    (r) => r.id === course.id,
-                  );
-                  if (!recommendation) return null;
-
-                  return (
-                    <CourseCardRecommend
-                      key={course.id}
-                      course={course}
-                      score={recommendation.score}
-                      selectedCategories={filters.selectedCategories}
-                    />
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                <p>No recommendations available</p>
-              </div>
-            )}
-          </AccordionContent>
-        </AccordionItem>
+        {/* Recommended */}
+        <SectionAccordion
+          id="recommended"
+          title="Recommended for You"
+          items={filteredRecommendedCourses}
+          total={recommendedCourses.length}
+          hasActiveFilters={hasActiveFilters}
+          render={(course) => (
+            <CourseCardRecommend
+              key={course.id}
+              course={course}
+              selectedCategories={filters.selectedCategories}
+            />
+          )}
+        />
       </Accordion>
+
+      <footer className="flex justify-center items-center h-16 ">
+        <p className="text-gray-500">
+          © 2025 React Learning Journey By Apple C.F |{" "}
+          <Link to="https://github.com/PommE15/react-learning-journey">
+            GitHub Repo
+          </Link>
+        </p>
+      </footer>
     </div>
   );
 }

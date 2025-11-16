@@ -1,11 +1,11 @@
 import { type LoaderFunctionArgs } from "react-router";
 import { dummyCategories, dummyCourses } from "../courses/courses-data";
-import type { Course, UserData } from "../data/types";
-import { generateUserData, userData } from "../data/users";
+import { courseNodes, userCourses } from "../data/courses-network";
+import type { Course } from "../data/types";
+import { generateRecommended } from "../data/users";
 import { Dashboard } from "./dashboard-view";
 
 export interface DashboardLoaderData {
-  user: UserData;
   completedCourses: Course[];
   inProgressCourses: Course[];
   recommendedCourses: Course[];
@@ -16,7 +16,6 @@ export interface DashboardLoaderData {
 }
 
 export async function loader({
-  params,
   request,
 }: LoaderFunctionArgs): Promise<DashboardLoaderData> {
   const url = new URL(request.url);
@@ -25,36 +24,34 @@ export async function loader({
   const categoriesParam = url.searchParams.get("categories");
   const selectedCategories = categoriesParam
     ? categoriesParam.split(",").filter((cat) => dummyCategories.includes(cat))
-    : [];
+    : ["Frontend"];
 
-  // In a real app, you'd get the user ID from authentication
-  const userId = params.userId ? parseInt(params.userId) : 1;
+  const { completed, inProgress } = userCourses;
 
-  // Generate or get user data
-  const user = userId === 1 ? userData : generateUserData(userId);
+  function getCourseTitleByIds(ids: string[]) {
+    const courseMap = Object.fromEntries(
+      courseNodes.map((c) => [c.id, c.title]),
+    );
 
-  // Get course details for each category and apply filtering
-  const getFilteredCourses = (courseIds: number[]) => {
-    return courseIds
-      .map((id) => dummyCourses.find((c) => c.id === id))
-      .filter(Boolean)
-      .filter(
-        (course) =>
-          selectedCategories.length === 0 ||
-          course!.categories.some((cat) => selectedCategories.includes(cat)),
-      ) as Course[];
-  };
+    return ids.map((id) => courseMap[id]).filter(Boolean);
+  }
 
-  const completedCourses = getFilteredCourses(user.completed.map((c) => c.id));
-  const inProgressCourses = getFilteredCourses(
-    user.in_progress.map((c) => c.id),
-  );
-  const recommendedCourses = getFilteredCourses(
-    user.recommended.map((c) => c.id),
+  const completedTitles = getCourseTitleByIds(completed);
+  const inProgressTitles = getCourseTitleByIds(inProgress);
+  const RecommendedTitles = getCourseTitleByIds(
+    generateRecommended(completed, inProgress),
   );
 
+  const completedCourses = dummyCourses.filter((course) =>
+    completedTitles.includes(course.title),
+  );
+  const inProgressCourses = dummyCourses.filter((course) =>
+    inProgressTitles.includes(course.title),
+  );
+  const recommendedCourses = dummyCourses.filter((course) =>
+    RecommendedTitles.includes(course.title),
+  );
   return {
-    user,
     completedCourses,
     inProgressCourses,
     recommendedCourses,

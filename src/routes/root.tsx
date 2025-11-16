@@ -5,7 +5,7 @@ import { dashboardRoute } from "./dashboard/dashboard-route";
 export const root = [
   {
     path: "/",
-    loader: () => redirect("/courses"),
+    loader: () => redirect("/dashboard"),
   },
   coursesRoute,
   dashboardRoute,

@@ -12,7 +12,7 @@ interface CourseCardProps {
 export function CourseCard({ course, selectedCategories }: CourseCardProps) {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="-my-2">
         <h3>{course.title}</h3>
         <CourseCardDescription course={course} />
       </CardHeader>

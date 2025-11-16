@@ -12,18 +12,18 @@ import { CardProgress } from "./card-progess";
 
 interface CourseCardProps {
   course: Course;
-  userCourse: UserCourse;
+  userCourse?: UserCourse;
   selectedCategories: string[];
 }
 
 export function CourseCardCompleted({
   course,
-  userCourse,
+  userCourse = undefined,
   selectedCategories,
 }: CourseCardProps) {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="-my-2">
         <h3>{course.title}</h3>
         <CardAction>
           <CircleCheckBig className="h-4 w-4 text-blue-600 font-bold mt-2" />

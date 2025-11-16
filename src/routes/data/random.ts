@@ -45,3 +45,7 @@ export function randomIntSmallerThan(max: number): number {
 export function randomIntRanged(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function random3to5(): number {
+  return Math.floor(Math.random() * (5 - 3 + 1)) + 3;
+}

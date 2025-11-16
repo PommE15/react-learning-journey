@@ -1,4 +1,9 @@
-import type { CourseCategory, CourseLink, CourseNode } from "./types";
+import type {
+  CourseCategory,
+  CourseLink,
+  CourseNode,
+  UserCourses,
+} from "./types";
 
 // course categories
 export const courseCategories: CourseCategory[] = [
@@ -83,14 +88,14 @@ export const courseNodes: CourseNode[] = [
     px: 1 / 2,
     hasChild: true,
   },
-  { id: "c20", title: "Web dev fundamentals", path: [2], size: 1 },
+  { id: "c20", title: "Web Dev Fundamentals", path: [2], size: 1 },
   { id: "c21", title: "CSS/HTML", path: [2], size: 1 },
   { id: "c22", title: "JavaScript and DOM", path: [2], size: 1 },
-  { id: "c23", title: "Modern dev and optimizations", path: [2], size: 1 },
+  { id: "c23", title: "Modern dev and Optimization", path: [2], size: 1 },
   { id: "p3", title: "Backend dev with Python", path: [3], size: 5, px: 1 / 2 },
   { id: "p4", title: "iOS dev with Swift", path: [4], size: 6, px: 1 / 2 },
   { id: "p5", title: "Android Kotlin", path: [5], size: 5, px: 1 / 2 },
-  { id: "p6", title: "Blockchain dev", path: [6], size: 3, px: 1 / 2 },
+  { id: "p6", title: "Blockchain Dev", path: [6], size: 3, px: 1 / 2 },
   {
     id: "p7",
     title: "Data Structures and Algo",
@@ -184,11 +189,7 @@ export const courseLinks: CourseLink[] = [
   // { id: "l27", source: "c12", target: "p9", width: 0.5, path: [2] },
 ];
 
-export const userCourses: {
-  completed: string[];
-  inProgress: string[];
-  recommended?: string[];
-} = {
+export const userCourses: UserCourses = {
   completed: [
     "c10",
     "c11",
