@@ -275,10 +275,10 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
     setTimeout(() => {
       nodes.forEach((node) => {
         // Find nodes center
-        const centerX = nodes.find((n) => n.id[1] === node.id[1]).px || 1 / 2;
+        const centerX = nodes.find((n) => n.id[1] === node.id[1])?.px || 1 / 2;
         console.log(
           node.id,
-          nodes.find((n) => n.id[1] === node.id[1]).px,
+          nodes.find((n) => n.id[1] === node.id[1])?.px,
           centerX,
         );
         // Special handling for level course nodes - center them in a row

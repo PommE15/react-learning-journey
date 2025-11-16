@@ -4,7 +4,6 @@ import type { Course, UserCourse } from "../../data/types";
 import {
   randomDatePastSixMonths,
   randomHoursIntBaseOn,
-  randomIntSmallerThan,
 } from "../../data/random";
 import { formatTimestamp } from "@/src/utils/formats";
 

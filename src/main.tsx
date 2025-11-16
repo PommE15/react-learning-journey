@@ -7,9 +7,10 @@ import "./styles/globals.css";
 import { root } from "./routes/root";
 
 // Determine basename dynamically by dev server type
-const basename = import.meta.env.DEV
-  ? "/" // local
-  : "/react-learning-journey"; // GitHub Pages
+const basename =
+  import.meta.env.DEV || false
+    ? "/" // local
+    : "/react-learning-journey"; // GitHub Pages
 
 const router = createBrowserRouter(root, { basename });
 

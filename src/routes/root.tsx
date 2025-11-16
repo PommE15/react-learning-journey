@@ -1,10 +1,11 @@
+import { redirect } from "react-router";
 import { coursesRoute } from "./courses/courses-route";
 import { dashboardRoute } from "./dashboard/dashboard-route";
 
 export const root = [
   {
     path: "/",
-    element: <div>Hello World</div>,
+    loader: () => redirect("/courses"),
   },
   coursesRoute,
   dashboardRoute,
@@ -19,23 +20,10 @@ export const root = [
   //   Component: () => {
   //     const { name, now } = useLoaderData();
   //     return (
-  //       <Card>
-  //         <CardHeader>
-  //           <CardTitle>Card Title</CardTitle>
-  //           <CardDescription>Card Description</CardDescription>
-  //           <CardAction>Card Action</CardAction>
-  //         </CardHeader>
-  //         <CardContent>
-  //           <Skeleton className="h-4 w-[250px]" />
-  //           <p>
-  //             {" "}
-  //             Hello World {now}, {name}!
-  //           </p>
-  //         </CardContent>
-  //         <CardFooter>
-  //           <p>Card Footer</p>
-  //         </CardFooter>
-  //       </Card>
+  //       <div>
+  //         <h1>Hello {name}</h1>
+  //         <p>Current time: {now}</p>
+  //       </div>
   //     );
   //   },
   // },

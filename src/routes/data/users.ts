@@ -47,7 +47,7 @@ function generateUserCourse(
     throw new Error(`Course with id ${courseId} not found`);
   }
 
-  const totalSessions = course.sessions.length;
+  const totalSessions = course.sessions;
 
   let completedSessions: number;
   let progress: number;

@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from "react-router";
+import { redirect, type LoaderFunctionArgs } from "react-router";
 import { dummyCategories, dummyCourses } from "../courses/courses-data";
 import type { Course, UserData } from "../data/types";
 import { generateUserData, userData } from "../data/users";
@@ -45,9 +45,7 @@ export async function loader({
       ) as Course[];
   };
 
-  const completedCourses = getFilteredCourses(
-    user.completed.map((c) => c.id),
-  );
+  const completedCourses = getFilteredCourses(user.completed.map((c) => c.id));
   const inProgressCourses = getFilteredCourses(
     user.in_progress.map((c) => c.id),
   );
@@ -69,6 +67,7 @@ export async function loader({
 
 export const dashboardRoute = {
   path: "/dashboard/:userId?",
+  // loader: () => redirect("/dashboard/Apple_CF"),
   loader,
   Component: Dashboard,
 };

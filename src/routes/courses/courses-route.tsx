@@ -72,7 +72,7 @@ export async function loader({
     filteredCourses = filteredCourses.filter(
       (course) =>
         course.title.toLowerCase().includes(query) ||
-        course.description.toLowerCase().includes(query) ||
+        // course.description.toLowerCase().includes(query) ||
         course.categories.some((cat) => cat.toLowerCase().includes(query)),
     );
   }

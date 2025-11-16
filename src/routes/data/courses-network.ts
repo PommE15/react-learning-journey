@@ -74,7 +74,7 @@ export const courseNodes: CourseNode[] = [
     size: 1,
   },
   { id: "c13", title: "Git and GitHub", path: [1, 2, 3, 6], size: 1 },
-  { id: "p2", ti: "Frontend web dev", path: [2], size: 4, px: 1 / 2 },
+  { id: "p2", title: "Frontend web dev", path: [2], size: 4, px: 1 / 2 },
   { id: "c20", title: "Web dev fundamentals", path: [2], size: 1 },
   { id: "c21", title: "CSS/HTML", path: [2], size: 1 },
   { id: "c22", title: "JavaScript and DOM", path: [2], size: 1 },
