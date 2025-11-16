@@ -2,11 +2,12 @@ import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 import { InteractionDebouncer } from "../../utils/debouncer";
 import { VoronoiSelection, type VoronoiElement } from "./voronoi";
-import type {
-  NetworkGraphProps,
-  CourseNode,
-  CourseLink,
-  CourseCategory,
+import {
+  // userCourses,
+  type NetworkGraphProps,
+  type CourseNode,
+  type CourseLink,
+  type CourseCategory,
 } from "../data/types";
 
 // Graph dimensions and layout constants
@@ -14,7 +15,7 @@ const GRAPH_WIDTH = 1024;
 const GRAPH_HEIGHT = 500;
 const GROUPED_SPACING = 32;
 const TEXT_ROTATION = -30;
-const TEXT_Y_OFFSET = -10;
+const TEXT_Y_OFFSET = -14;
 const NODE_RADIUS = 5;
 const NODE_STROKE_WIDTH = 5;
 const DEFAULT_LINK_LENGTH = 100;
@@ -95,6 +96,20 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
         });
       });
 
+    // Define arrow marker
+    svgSelection
+      .append("marker")
+      .attr("id", "arrow")
+      .attr("viewBox", "0 0 10 10")
+      .attr("refX", 15) // how far the arrow sits past the line end
+      .attr("refY", 5)
+      .attr("markerWidth", 4)
+      .attr("markerHeight", 4)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M 0 0 L 10 5 L 0 10 z")
+      .attr("fill", "var(--color-muted-foreground)"); // or dynamic color
+
     // Create Voronoi selection manager
     const voronoiSelection = new VoronoiSelection(svgSelection, width, height);
 
@@ -111,6 +126,7 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
       .append("line")
       .attr("stroke", "var(--color-muted-foreground)")
       .attr("stroke-width", (d) => d.width || DEFAULT_LINK_WIDTH)
+      .attr("marker-end", (d) => (d.length != 1 ? "url(#arrow)" : null))
       .style("transition", "all 0.5s ease")
       .style("cursor", "pointer");
 
@@ -124,24 +140,37 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
     // Add circles to nodes with dynamic sizing and group-based colors
     nodeElements
       .append("circle")
-      .attr("r", (d) => NODE_RADIUS + d.size)
+      .attr("r", (d) =>
+        d.id.includes("p") ? NODE_RADIUS + d.size * 1.5 : NODE_RADIUS,
+      )
       .attr("fill", "#eee")
       .attr("stroke", (d) => paths[d.path[0] - 1].color) // id is index+1
       .attr("stroke-width", NODE_STROKE_WIDTH)
+      .style("display", (d) => (d.hasChild ? "none" : "block"))
       .style("pointer-events", "none")
       .style("transition", "all 0.8s ease");
 
     // Add labels to nodes positioned above the circles
     nodeElements
       .append("text")
-      .attr("dy", (d) => TEXT_Y_OFFSET - d.size * 2)
+      .attr("dy", (d) =>
+        d.id.includes("c") ? TEXT_Y_OFFSET - d.size * 2 : -TEXT_Y_OFFSET * 2,
+      )
       .attr("text-anchor", (d) => (d.id.includes("c") ? "" : "middle"))
       .attr("transform", (d) =>
         d.id.includes("c") ? `rotate(${TEXT_ROTATION})` : "rotate(0)",
       )
-      .attr("class", "svg-text")
+      .attr(
+        "class",
+        (d) =>
+          `svg-text ${d.id.includes("c") ? "text-xs" : ""} ${d.hasChild ? "opacity-50" : ""}`,
+      )
       .style("pointer-events", "none")
-      .text((d) => d.title);
+      .text((d) =>
+        d.hasChild
+          ? "[ " + d.id.toUpperCase() + ". " + d.title + " ]"
+          : d.id.toUpperCase() + ". " + d.title,
+      );
 
     // Create debouncers with appropriate delays
     const hoverDebouncer = new InteractionDebouncer<CourseNode | CourseLink>(
@@ -198,7 +227,7 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
 
       // Reset all nodes and links to normal state
       nodeElements
-        .style("opacity", isDim ? DIMMED_OPACITY : DEFAULT_OPACITY)
+        .style("opacity", isDim ? DIMMED_OPACITY / 2 : DEFAULT_OPACITY)
         .select("circle")
         .attr("stroke-width", NODE_STROKE_WIDTH);
       linkElements
@@ -231,7 +260,6 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
     const handleMouseEnter = (element: VoronoiElement, event?: MouseEvent) => {
       if (event?.type === "click") {
         // handleNodeClick(element.data as CourseNode | CourseLink);
-        console.log("Clicked:", element.data);
       } else {
         hoverDebouncer.onEnter(
           element.data as CourseNode | CourseLink,
@@ -274,14 +302,9 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
     // After a delay, set fixed positions for animation effect
     setTimeout(() => {
       nodes.forEach((node) => {
-        // Find nodes center
+        // Get nodes center
         const centerX = nodes.find((n) => n.id[1] === node.id[1])?.px || 1 / 2;
-        console.log(
-          node.id,
-          nodes.find((n) => n.id[1] === node.id[1])?.px,
-          centerX,
-        );
-        // Special handling for level course nodes - center them in a row
+        // Special handling for level course nodes
         if (node.id.includes("c")) {
           const group2Nodes = nodes.filter((n) => n.id.includes("c"));
           const nodeIndex = group2Nodes.findIndex((n) => n.id === node.id);

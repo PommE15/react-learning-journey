@@ -151,8 +151,8 @@
     @apply text-sm font-light;
   }
   .svg-text {
-    fill: rgba(51, 51, 51, 0.9); /* text-gray-700 with 90% opacity */
-    stroke: rgba(255, 255, 255, 0.7); /* white with 70% opacity */
+    fill: rgba(51, 51, 51, 1); /* text-gray-700 with 100% opacity */
+    stroke: rgba(255, 255, 255, 0.9); /* white with 80% opacity */
     stroke-width: 8px;
     stroke-linejoin: round;
     paint-order: stroke fill;

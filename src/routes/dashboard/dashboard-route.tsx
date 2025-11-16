@@ -1,4 +1,4 @@
-import { redirect, type LoaderFunctionArgs } from "react-router";
+import { type LoaderFunctionArgs } from "react-router";
 import { dummyCategories, dummyCourses } from "../courses/courses-data";
 import type { Course, UserData } from "../data/types";
 import { generateUserData, userData } from "../data/users";

@@ -54,6 +54,7 @@ export const courseNodes: CourseNode[] = [
     path: [1, 2, 3, 6],
     size: 4,
     px: 1 / 4,
+    hasChild: true,
   },
   {
     id: "c10",
@@ -74,7 +75,14 @@ export const courseNodes: CourseNode[] = [
     size: 1,
   },
   { id: "c13", title: "Git and GitHub", path: [1, 2, 3, 6], size: 1 },
-  { id: "p2", title: "Frontend web dev", path: [2], size: 4, px: 1 / 2 },
+  {
+    id: "p2",
+    title: "Frontend web dev",
+    path: [2],
+    size: 4,
+    px: 1 / 2,
+    hasChild: true,
+  },
   { id: "c20", title: "Web dev fundamentals", path: [2], size: 1 },
   { id: "c21", title: "CSS/HTML", path: [2], size: 1 },
   { id: "c22", title: "JavaScript and DOM", path: [2], size: 1 },
@@ -93,11 +101,27 @@ export const courseNodes: CourseNode[] = [
   {
     id: "p8",
     title: "Intermediate Javascript",
-    path: [6],
+    path: [6, 2],
     size: 3,
     px: 2.5 / 4,
+    hasChild: true,
   },
-  { id: "p9", title: "React", path: [2], size: 3, px: 3.5 / 4 },
+  { id: "c80", title: "Object-Oriented JavaScript", path: [6, 2], size: 1 },
+  { id: "c81", title: "Functional Programming", path: [6, 2], size: 1 },
+  {
+    id: "c82",
+    title: "Asynchronous Programming with JavaScript",
+    path: [6, 2],
+    size: 1,
+  },
+  {
+    id: "p9",
+    title: "React",
+    path: [2],
+    size: 3,
+    px: 3.5 / 4,
+    hasChild: true,
+  },
   { id: "c90", title: "React Fundamentals", size: 1, path: [2] },
   { id: "c91", title: "React and Redux", size: 1, path: [2] },
   { id: "c92", title: "React Native", size: 1, path: [2] },
@@ -132,5 +156,18 @@ export const courseLinks: CourseLink[] = [
   { source: "c90", target: "c91", length: 1, path: [2] },
   { source: "c91", target: "c91", length: 1, path: [2] },
   { source: "c92", target: "c91", length: 1, path: [2] },
+  { source: "c80", target: "c81", length: 1, path: [6, 2] },
+  { source: "c81", target: "c82", length: 1, path: [6, 2] },
+  { source: "c22", target: "c80", width: 1.5, path: [2] },
   // { source: "c12", target: "p9", width: 0.5, path: [2] },
 ];
+
+export const userCourses: {
+  completed: string[];
+  inProgress: string[];
+  recommended: string[];
+} = {
+  completed: ["c10", "c11", "c12", "c13", "c20", "c21", "c22", "c80", "c81"],
+  inProgress: [],
+  recommended: [],
+};

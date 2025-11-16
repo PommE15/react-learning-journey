@@ -10,7 +10,6 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ course, selectedCategories }: CourseCardProps) {
-  console.log(course);
   return (
     <Card>
       <CardHeader>

@@ -48,6 +48,7 @@ export interface CourseNode extends d3.SimulationNodeDatum {
   path: number[];
   size: number;
   px?: number;
+  hasChild?: boolean;
 }
 
 export interface CourseLink extends d3.SimulationLinkDatum<CourseNode> {
