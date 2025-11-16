@@ -14,7 +14,7 @@ export function formatTime(minutes: number) {
  * @param timestamp - The timestamp string to format (ISO format or valid date string)
  * @returns Formatted date string in "MMM d, yyyy" US format
  */
-export function formatTimestamp(timestamp: string): string {
+export function formatTimestamp(timestamp: Date): string {
   const date = new Date(timestamp);
   return date.toLocaleDateString("en-US", {
     year: "numeric",

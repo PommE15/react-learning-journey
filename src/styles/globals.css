@@ -160,7 +160,7 @@
 
   /* Sticky controls base style */
   .sticky-controls {
-    @apply sticky top-0 bottom-0 z-10 pt-4 pb-3 bg-radial-[at_25%_25%] from-sky-50/95 to-white/90 to-75% backdrop-blur-xs border-l border-l-blue-100/50;
+    @apply sticky top-0 bottom-0 z-10 pt-4 pb-3 bg-radial-[at_25%_25%] from-sky-50/95 to-white/90 to-75% backdrop-blur-xs border-l border-l-blue-100/50 border-t-2 border-t-gray-200/10;
     transition: all 0.2s ease;
   }
 }

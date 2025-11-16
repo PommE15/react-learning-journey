@@ -9,20 +9,20 @@ export type Session = {
 
 export type Course = {
   id: number;
-  title: string;
-  description: string;
   categories: string[];
-  sessions: Session[];
-  total_tasks: number;
-  total_questions: number;
-  total_time: number;
+  program: string;
+  title: string;
+  sessions: number;
+  hours: number;
+  tasks: number;
+  keywords: string[];
 };
 
 export type UserCourse = {
   id: number;
   progress: 100 | number;
   total_time_spent: number;
-  sessions: {
+  sessions?: {
     timestamp: string;
     time_spent: number;
     task_score: number;

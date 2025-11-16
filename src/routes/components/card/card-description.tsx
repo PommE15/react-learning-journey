@@ -1,7 +1,12 @@
 import { CardDescription } from "@/components/ui/card";
-import { formatTime, formatTimestamp } from "@/src/utils/formats";
-import { BookOpen, Clock } from "lucide-react";
+import { BookOpen, Clock, ClipboardList, FileQuestionMark } from "lucide-react";
 import type { Course, UserCourse } from "../../data/types";
+import {
+  randomDatePastSixMonths,
+  randomHoursIntBaseOn,
+  randomIntSmallerThan,
+} from "../../data/random";
+import { formatTimestamp } from "@/src/utils/formats";
 
 interface CourseCardDescriptionProps {
   course: Course;
@@ -12,27 +17,28 @@ interface CourseCardDescriptionProps {
 export function CourseCardDescription({
   course,
   userCourse = undefined,
-  isWorkInProgress = false,
 }: CourseCardDescriptionProps) {
   return (
     <CardDescription>
       <div className="flex items-center gap-1">
-        <Clock className="size-4" />
-        {formatTime(course.total_time)}
-        <BookOpen className="size-4 ml-2" />
-        {isWorkInProgress && (
-          <span>{userCourse && userCourse.sessions.length} / </span>
+        <BookOpen className="size-4" />
+        {course.sessions} Sessions
+        <FileQuestionMark className="size-4 ml-1" />
+        {course.sessions} Quiz
+        {course.tasks > 0 && (
+          <>
+            <ClipboardList className="size-4 ml-1" />
+            {course.tasks} Tasks
+          </>
         )}
-        {course.sessions.length} sessions {userCourse ? "completed" : ""}
       </div>
+
       {userCourse && (
-        <div>
-          Time Spent: {formatTime(userCourse.total_time_spent)}
-          <span className="mx-2">|</span>
-          Last Updated:{" "}
-          {formatTimestamp(
-            userCourse.sessions[userCourse.sessions.length - 1].timestamp,
-          )}
+        <div className="flex items-center gap-1">
+          <Clock className="size-4" />
+          {course.hours} h |
+          <span>spent: {randomHoursIntBaseOn(course.hours)}</span> -
+          <span>updated: {formatTimestamp(randomDatePastSixMonths())}</span>
         </div>
       )}
     </CardDescription>

@@ -28,9 +28,10 @@ export function CategoryBadge({
   return (
     <Badge
       variant="secondary"
-      className={`m-0.5 transition-all duration-300 hover:bg-gray-200 ${
-        clickable ? "cursor-pointer" : ""
-      } ${isSelected ? getCategoryGradient(category) : ""}`}
+      className={`m-0.5 transition-all duration-300
+        hover:${clickable ? "bg-gray-200" : ""} ${
+          clickable ? "cursor-pointer" : ""
+        } ${isSelected ? getCategoryGradient(category) : ""}`}
       onClick={onClick}
     >
       {category}

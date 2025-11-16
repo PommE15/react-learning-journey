@@ -1,0 +1,375 @@
+{
+  "categories": ["Frontend", "Backend", "iOS", "Android", "Blockchain"],
+  "courses": [
+    {
+      "id": 1,
+      "categories": ["Frontend", "Backend", "Programming", "Blockchain"],
+      "program": "Introduction to Programming",
+      "title": "Introduction to Web Development",
+      "sessions": 3,
+      "hours": 14,
+      "tasks": 1,
+      "keywords": ["HTML", "CSS", "JavaScript"]
+    },
+    {
+      "id": 2,
+      "categories": ["Frontend", "Backend", "Programming", "Blockchain"],
+      "program": "Introduction to Programming",
+      "title": "Introduction to Programming with Python",
+      "sessions": 11,
+      "hours": 58,
+      "tasks": 2,
+      "keywords": ["Python"]
+    },
+    {
+      "id": 3,
+      "categories": ["Frontend", "Backend", "Programming", "Blockchain"],
+      "program": "Introduction to Programming, Blockchain Developer",
+      "title": "Introduction to Javascript",
+      "sessions": 8,
+      "hours": 36,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    },
+    {
+      "id": 4,
+      "categories": ["Frontend", "Backend", "Programming", "Blockchain"],
+      "program": "Introduction to Programming, React",
+      "title": "Git and GitHub",
+      "sessions": 5,
+      "hours": 7,
+      "tasks": 0,
+      "keywords": ["Git", "GitHub"]
+    },
+    {
+      "id": 5,
+      "categories": ["Frontend"],
+      "program": "Front End Web Developer",
+      "title": "Web Development Fundamentals",
+      "sessions": 4,
+      "hours": 11,
+      "tasks": 1,
+      "keywords": ["HTML", "CSS", "JavaScript"]
+    },
+    {
+      "id": 6,
+      "categories": ["Frontend"],
+      "program": "Front End Web Developer",
+      "title": "CSS Techniques, Tooling, and Web Accessibility",
+      "sessions": 4,
+      "hours": 10,
+      "tasks": 1,
+      "keywords": ["CSS", "Tooling", "Accessibility"]
+    },
+    {
+      "id": 7,
+      "categories": ["Frontend"],
+      "program": "Front End Web Developer",
+      "title": "JavaScript and the DOM",
+      "sessions": 5,
+      "hours": 10,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    },
+    {
+      "id": 8,
+      "categories": ["Frontend"],
+      "program": "Front End Web Developer",
+      "title": "Modern Development Practices and Optimization",
+      "sessions": 3,
+      "hours": 8,
+      "tasks": 1,
+      "keywords": [""]
+    },
+    {
+      "id": 9,
+      "categories": ["Frontend"],
+      "program": "Front End Web Developer",
+      "title": "Modern Development Practices and Optimization",
+      "sessions": 3,
+      "hours": 8,
+      "tasks": 1,
+      "keywords": [""]
+    },
+    {
+      "id": 10,
+      "categories": ["Frontend"],
+      "program": "Backend Developer with Python",
+      "title": "SQL and Data Modeling for the Web with Python",
+      "sessions": 8,
+      "hours": 22,
+      "tasks": 1,
+      "keywords": ["Python"]
+    },
+    {
+      "id": 11,
+      "categories": ["Frontend"],
+      "program": "Backend Developer with Python",
+      "title": "API Development and Documentation",
+      "sessions": 5,
+      "hours": 9,
+      "tasks": 1,
+      "keywords": ["Python"]
+    },
+    {
+      "id": 12,
+      "categories": ["Frontend"],
+      "program": "Backend Developer with Python",
+      "title": "Identity Access Management",
+      "sessions": 5,
+      "hours": 18,
+      "tasks": 1,
+      "keywords": ["Python"]
+    },
+    {
+      "id": 13,
+      "categories": ["Frontend"],
+      "program": "Backend Developer with Python",
+      "title": "Server Deployment and Containerization",
+      "sessions": 4,
+      "hours": 11,
+      "tasks": 1,
+      "keywords": ["Python"]
+    },
+    {
+      "id": 14,
+      "categories": ["Frontend"],
+      "program": "Backend Developer with Python",
+      "title": "Full Stack Capstone",
+      "sessions": 1,
+      "hours": 7,
+      "tasks": 1,
+      "keywords": ["Python"]
+    },
+    {
+      "id": 15,
+      "categories": ["iOS"],
+      "program": "iOS Development with Swift",
+      "title": "Programming with Swift",
+      "sessions": 4,
+      "hours": 19,
+      "tasks": 1,
+      "keywords": ["Swift", "iOS"]
+    },
+    {
+      "id": 16,
+      "categories": ["iOS"],
+      "program": "iOS Development with Swift",
+      "title": "iOS User Interfaces with Swift UI",
+      "sessions": 4,
+      "hours": 16,
+      "tasks": 1,
+      "keywords": ["Swift", "iOS"]
+    },
+    {
+      "id": 17,
+      "categories": ["iOS"],
+      "program": "iOS Development with Swift",
+      "title": "iOS Application Data with SwiftData",
+      "sessions": 4,
+      "hours": 17,
+      "tasks": 1,
+      "keywords": ["Swift", "iOS"]
+    },
+    {
+      "id": 18,
+      "categories": ["iOS"],
+      "program": "iOS Development with Swift",
+      "title": "Networking and Concurrency for iOS Apps",
+      "sessions": 4,
+      "hours": 11,
+      "tasks": 1,
+      "keywords": ["iOS"]
+    },
+    {
+      "id": 19,
+      "categories": ["iOS"],
+      "program": "iOS Development with Swift",
+      "title": "Planning and Publishing iOS Apps",
+      "sessions": 4,
+      "hours": 13,
+      "tasks": 1,
+      "keywords": ["iOS"]
+    },
+    {
+      "id": 20,
+      "categories": ["Android"],
+      "program": "Android Kotlin",
+      "title": "Developing Android Apps with Kotlin - Part 1",
+      "sessions": 6,
+      "hours": 43,
+      "tasks": 1,
+      "keywords": ["Android", "Kotlin"]
+    },
+    {
+      "id": 21,
+      "categories": ["Android"],
+      "program": "Android Kotlin",
+      "title": "Developing Android Apps with Kotlin - Part 2",
+      "sessions": 6,
+      "hours": 44,
+      "tasks": 1,
+      "keywords": ["Android", "Kotlin"]
+    },
+    {
+      "id": 22,
+      "categories": ["Android"],
+      "program": "Android Kotlin",
+      "title": "Advanced Android Apps with Kotlin - Part 1",
+      "sessions": 8,
+      "hours": 10,
+      "tasks": 1,
+      "keywords": ["Android", "Kotlin"]
+    },
+    {
+      "id": 23,
+      "categories": ["Android"],
+      "program": "Android Kotlin",
+      "title": "Advanced Android Apps with Kotlin - Part 2",
+      "sessions": 7,
+      "hours": 11,
+      "tasks": 1,
+      "keywords": ["Android", "Kotlin"]
+    },
+    {
+      "id": 24,
+      "categories": ["Android"],
+      "program": "Android Kotlin",
+      "title": "Android Capstone Project",
+      "sessions": 1,
+      "hours": 8,
+      "tasks": 1,
+      "keywords": ["Android"]
+    },
+    {
+      "id": 25,
+      "categories": ["Blockchain"],
+      "program": "Intermediate JavaScript",
+      "title": "Object-Oriented JavaScript",
+      "sessions": 5,
+      "hours": 13,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    },
+    {
+      "id": 26,
+      "categories": ["Blockchain"],
+      "program": "Intermediate JavaScript",
+      "title": "Functional Programming",
+      "sessions": 6,
+      "hours": 16,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    },
+    {
+      "id": 27,
+      "categories": ["Blockchain"],
+      "program": "Intermediate JavaScript",
+      "title": "Asynchronous Programming with JavaScript",
+      "sessions": 5,
+      "hours": 11,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    },
+    {
+      "id": 28,
+      "categories": ["Blockchain"],
+      "program": "Intermediate JavaScript",
+      "title": "Functional Programming with JavaScript",
+      "sessions": 5,
+      "hours": 11,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    },
+    {
+      "id": 29,
+      "categories": ["Blockchain"],
+      "program": "Blockchain Developer",
+      "title": "Blockchain Fundamentals",
+      "sessions": 6,
+      "hours": 14,
+      "tasks": 1,
+      "keywords": ["Blockchain"]
+    },
+    {
+      "id": 30,
+      "categories": ["Blockchain"],
+      "program": "Blockchain Developer",
+      "title": "Shell Workshop",
+      "sessions": 1,
+      "hours": 2,
+      "tasks": 0,
+      "keywords": ["Blockchain", "Shell"]
+    },
+    {
+      "id": 31,
+      "categories": ["Blockchain"],
+      "program": "Blockchain Developer",
+      "title": "Blockchain With Solidity",
+      "sessions": 4,
+      "hours": 14,
+      "tasks": 1,
+      "keywords": ["Blockchain"]
+    },
+    {
+      "id": 32,
+      "categories": ["Frontend", "Backend", "Programming", "iOS", "Android"],
+      "program": "Data Structures and Algorithms",
+      "title": "Data Structures",
+      "sessions": 6,
+      "hours": 16,
+      "tasks": 1,
+      "keywords": ["Data Structures", "Algorithms"]
+    },
+    {
+      "id": 33,
+      "categories": ["Frontend", "Backend", "Programming", "iOS", "Android"],
+      "program": "Data Structures and Algorithms",
+      "title": "Algorithms",
+      "sessions": 6,
+      "hours": 27,
+      "tasks": 2,
+      "keywords": ["Data Structures", "Algorithms"]
+    },
+    {
+      "id": 34,
+      "categories": ["Frontend", "Backend", "Programming", "iOS", "Android"],
+      "program": "Data Structures and Algorithms",
+      "title": "Introduction to Python Programming",
+      "sessions": 9,
+      "hours": 16,
+      "tasks": 0,
+      "keywords": ["Data Structures", "Algorithms", "Python"]
+    },
+    {
+      "id": 35,
+      "categories": ["Frontend"],
+      "program": "React",
+      "title": "React Fundamentals",
+      "sessions": 5,
+      "hours": 12,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    },
+    {
+      "id": 36,
+      "categories": ["Frontend"],
+      "program": "React",
+      "title": "React and Redux",
+      "sessions": 9,
+      "hours": 27,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    },
+    {
+      "id": 37,
+      "categories": ["Frontend"],
+      "program": "React",
+      "title": "React Native",
+      "sessions": 5,
+      "hours": 18,
+      "tasks": 1,
+      "keywords": ["JavaScript"]
+    }
+  ]
+}

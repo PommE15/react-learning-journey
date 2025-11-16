@@ -274,13 +274,20 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
     // After a delay, set fixed positions for animation effect
     setTimeout(() => {
       nodes.forEach((node) => {
+        // Find nodes center
+        const centerX = nodes.find((n) => n.id[1] === node.id[1]).px || 1 / 2;
+        console.log(
+          node.id,
+          nodes.find((n) => n.id[1] === node.id[1]).px,
+          centerX,
+        );
         // Special handling for level course nodes - center them in a row
         if (node.id.includes("c")) {
           const group2Nodes = nodes.filter((n) => n.id.includes("c"));
           const nodeIndex = group2Nodes.findIndex((n) => n.id === node.id);
           const spacing = GROUPED_SPACING;
           const totalWidth = (group2Nodes.length - 1) * spacing;
-          const startX = (width - totalWidth) / 2;
+          const startX = (width - totalWidth) * centerX;
           node.fx = startX + nodeIndex * spacing;
         }
         // If node has custom x position (px), fix it horizontally

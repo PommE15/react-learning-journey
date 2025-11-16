@@ -15,7 +15,7 @@ export default defineConfig({
   ],
   // Only set base path for production build
   // base: process.env.NODE_ENV === 'production' ? '/react-learning-journey/' : '/',
-  base: "/react-learning-journey/",
+  // base: "/react-learning-journey/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),

@@ -34,7 +34,7 @@ export function CourseCardFooter({
   return (
     <>
       <Separator />
-      <CardFooter className="-my-2.5 -ml-2.5">
+      <CardFooter className="-my-2.5 -ml-2">
         <div>
           {sortedCategories.map((category: string) => (
             <CategoryBadge

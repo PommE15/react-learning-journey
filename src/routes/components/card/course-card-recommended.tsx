@@ -9,6 +9,7 @@ import { Star } from "lucide-react";
 import type { Course } from "../../data/types";
 import { CourseCardDescription } from "./card-description";
 import { CourseCardFooter } from "./card-footer";
+import { randomText } from "../../data/random";
 
 interface CourseCardProps {
   score: number;
@@ -34,7 +35,7 @@ export function CourseCardRecommend({
         </CardAction>
       </CardHeader>
       <CardContent className="min-h-16">
-        <p className="text-sm">{course.description}</p>
+        <p className="text-sm">{randomText()}</p>
       </CardContent>
       <CourseCardFooter
         course={course}

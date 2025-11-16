@@ -1,8 +1,14 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+} from "@/components/ui/card";
 import { CircleCheckBig } from "lucide-react";
 import { CourseCardDescription } from "./card-description";
 import { CourseCardFooter } from "./card-footer";
 import type { Course, UserCourse } from "../../data/types";
+import { CardProgress } from "./card-progess";
 
 interface CourseCardProps {
   course: Course;
@@ -19,18 +25,13 @@ export function CourseCardCompleted({
     <Card>
       <CardHeader>
         <h3>{course.title}</h3>
+        <CardAction>
+          <CircleCheckBig className="h-4 w-4 text-blue-600 font-bold mt-2" />
+        </CardAction>
         <CourseCardDescription course={course} userCourse={userCourse} />
       </CardHeader>
-      <CardContent className="min-h-16 space-y-2">
-        <div className="flex justify-between gap-2">
-          Completed
-          <CircleCheckBig className="size-8 text-blue-600 font-bold -mt-2" />
-        </div>
-        <div>
-          <p>X% Question Accuracy</p>
-          <p>X% Task Success</p>
-        </div>
-      </CardContent>
+      <CardContent className="-mb-4">Completed</CardContent>
+      <CardProgress data={course} isCompleted={true} />
       <CourseCardFooter
         course={course}
         selectedCategories={selectedCategories}

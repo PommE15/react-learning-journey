@@ -6,8 +6,8 @@ import "./styles/globals.css";
 
 import { root } from "./routes/root";
 
-// Determine basename dynamically
-const basename = import.meta.env.DEV // dev server
+// Determine basename dynamically by dev server type
+const basename = import.meta.env.DEV
   ? "/" // local
   : "/react-learning-journey"; // GitHub Pages
 
