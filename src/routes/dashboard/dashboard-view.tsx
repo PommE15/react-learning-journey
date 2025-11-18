@@ -125,6 +125,7 @@ export function Dashboard() {
       <NetworkGraph
         data={courseData}
         selectedCategories={filters.selectedCategories}
+        isUser={true}
       />
 
       {/* Filter andand Summary */}
@@ -137,7 +138,7 @@ export function Dashboard() {
         <div className="flex items-center gap-2 text-sm text-muted-foreground -ml-0.5 mt-3">
           <Book className="size-4" />
           <span>
-            {completedCourses.length + inProgressCourses.length} courses
+            {completedCourses.length + inProgressCourses.length} courses visited
           </span>
           <Clock className="ml-2 size-4" />
           <span>{totalTimeSpent} hours spent</span>

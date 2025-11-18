@@ -39,7 +39,11 @@ const HOVER_LEAVE_DELAY = 100;
 
 const { completed, inProgress } = userCourses;
 
-const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
+const NetworkGraph = ({
+  data,
+  selectedCategories,
+  isUser,
+}: NetworkGraphProps) => {
   // Refs for SVG element and container div
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -122,7 +126,10 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
     const recommended = generateRecommended(completed, inProgress);
     const linkElements = renderLinks(
       linkGroup,
-      links /* , inProgress, recommended*/,
+      links,
+      isUser,
+      /*inProgress,
+      recommended,*/
     );
 
     // Create node elements (group containers for circles and text) - NO hover events
@@ -133,9 +140,9 @@ const NetworkGraph = ({ data, selectedCategories }: NetworkGraphProps) => {
       .append("g");
 
     // Add circles to nodes with dynamic sizing and group-based colors
-    renderNodeCircles(nodeElements, completed, inProgress, paths); // Add labels to nodes positioned above the circles
+    renderNodeCircles(nodeElements, isUser, completed, inProgress, paths); // Add labels to nodes positioned above the circles
     // Add labels to nodes positioned above the circles
-    renderNodeTexts(nodeElements, completed, inProgress, recommended);
+    renderNodeTexts(nodeElements, isUser, completed, inProgress, recommended);
 
     // Clear highlight function - MOVED UP to be available for other functions
     const clearHighlight = (isDim: boolean = false) => {

@@ -6,9 +6,10 @@ const NODE_STROKE_WIDTH = 5;
 
 export function renderNodeCircles(
   nodeElements: d3.Selection<SVGGElement, CourseNode, SVGGElement, unknown>,
+  isUser: boolean,
   completed: string[],
   inProgress: string[],
-  paths: { color: string }[],
+  paths: { color: string }[], // circle color
 ) {
   const circles = nodeElements
     .append("circle")
@@ -25,22 +26,24 @@ export function renderNodeCircles(
     .style("transition", "all 0.8s ease");
 
   // Animate stroke width between NODE_STROKE_WIDTH and NODE_STROKE_WIDTH * 2
-  circles
-    .filter((d) => inProgress.includes(d.id))
-    .transition()
-    .duration(1000) // 1 second
-    .attr("stroke-width", NODE_STROKE_WIDTH / 2)
-    .transition()
-    .duration(1000)
-    .attr("stroke-width", NODE_STROKE_WIDTH * 3)
-    .on("end", function repeat() {
-      d3.select(this)
-        .transition()
-        .duration(1000)
-        .attr("stroke-width", NODE_STROKE_WIDTH / 2)
-        .transition()
-        .duration(1000)
-        .attr("stroke-width", NODE_STROKE_WIDTH * 3)
-        .on("end", repeat);
-    });
+  if (isUser) {
+    circles
+      .filter((d) => inProgress.includes(d.id))
+      .transition()
+      .duration(1000) // 1 second
+      .attr("stroke-width", NODE_STROKE_WIDTH / 2)
+      .transition()
+      .duration(1000)
+      .attr("stroke-width", NODE_STROKE_WIDTH * 3)
+      .on("end", function repeat() {
+        d3.select(this)
+          .transition()
+          .duration(1000)
+          .attr("stroke-width", NODE_STROKE_WIDTH / 2)
+          .transition()
+          .duration(1000)
+          .attr("stroke-width", NODE_STROKE_WIDTH * 3)
+          .on("end", repeat);
+      });
+  }
 }

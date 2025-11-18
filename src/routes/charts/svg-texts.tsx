@@ -8,6 +8,7 @@ const TEXT_Y_OFFSET = 15;
 
 export function renderNodeTexts(
   nodeElements: d3.Selection<SVGGElement, CourseNode, SVGGElement, unknown>,
+  isUser: boolean,
   completed: string[],
   inProgress: string[],
   recommended: string[],
@@ -26,16 +27,16 @@ export function renderNodeTexts(
       "class",
       (d) => `svg-text
       ${d.id.includes("c") ? "text-xs" : ""}
-      ${inProgress.includes(d.id) ? "font-bold" : ""}`,
+      ${isUser && inProgress.includes(d.id) ? "font-bold" : ""}`,
     )
-    .style("pointer-events", "none")
-    .style("opacity", (d) => (d.hasChild ? "0.5" : "1"))
     .style("stroke", (d) =>
-      recommended.includes(d.id) ? "#fffbeb" /*amber-50*/ : "white",
+      isUser && recommended.includes(d.id) ? "#fffbeb" /*amber-50*/ : "white",
     )
     .style("stroke-opacity", (d) =>
-      recommended.includes(d.id) ? "0.5" : "0.9",
+      isUser && recommended.includes(d.id) ? "0.5" : "0.9",
     )
+    .style("opacity", (d) => (d.hasChild ? "0.5" : "1"))
+    .style("pointer-events", "none")
     .text((d) =>
       d.hasChild
         ? `( ${d.id.toUpperCase()}. ${d.title} )`

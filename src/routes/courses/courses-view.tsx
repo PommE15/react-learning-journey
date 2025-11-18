@@ -85,6 +85,7 @@ export function Courses() {
       <NetworkGraph
         data={courseData}
         selectedCategories={filters.selectedCategories}
+        isUser={false}
       />
 
       {/* Search */}

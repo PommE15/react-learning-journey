@@ -113,12 +113,13 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Custom gradient steps colors based on schole's site */
-  --color-schole-step-1: #ffd131cc;
-  --color-schole-step-2: #ffb366cc;
-  --color-schole-step-3: #ff9f7acc;
-  --color-schole-step-4: #f19ad6cc;
-  --color-schole-step-5: #e485d1cc;
-  --color-schole-step-6: #eba5ffcc;
+  --color-schole-step-1: #ffd131;
+  --color-schole-step-2: #fcca53;
+  --color-schole-step-3: #f9c375;
+  --color-schole-step-4: #f6bc97;
+  --color-schole-step-5: #f3b5b9;
+  --color-schole-step-6: #f0aedb;
+  --color-schole-step-7: #eba5ff;
 }
 
 @layer base {
@@ -168,38 +169,48 @@
 /* Custom Gradient Steps */
 @layer utilities {
   .bg-gradient-step-1 {
-    background: linear-gradient(
-      to right,
-      var(--color-schole-step-1),
-      var(--color-schole-step-1)
-    );
+    background: var(--color-gray-300);
   }
   .bg-gradient-step-2 {
     background: linear-gradient(
       to right,
       var(--color-schole-step-1),
-      var(--color-schole-step-3)
+      var(--color-schole-step-2)
     );
   }
   .bg-gradient-step-3 {
+    background: linear-gradient(
+      to right,
+      var(--color-schole-step-2),
+      var(--color-schole-step-3)
+    );
+  }
+  .bg-gradient-step-4 {
     background: linear-gradient(
       to right,
       var(--color-schole-step-3),
       var(--color-schole-step-4)
     );
   }
-  .bg-gradient-step-4 {
+  .bg-gradient-step-5 {
     background: linear-gradient(
       to right,
       var(--color-schole-step-4),
       var(--color-schole-step-5)
     );
   }
-  .bg-gradient-step-5 {
+  .bg-gradient-step-6 {
     background: linear-gradient(
       to right,
       var(--color-schole-step-5),
       var(--color-schole-step-6)
+    );
+  }
+  .bg-gradient-step-7 {
+    background: linear-gradient(
+      to right,
+      var(--color-schole-step-6),
+      var(--color-schole-step-7)
     );
   }
 

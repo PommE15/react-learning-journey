@@ -7,6 +7,7 @@ const DEFAULT_LINK_WIDTH = 1;
 export function renderLinks(
   linkGroup: d3.Selection<SVGGElement, unknown, null, undefined>,
   links: CourseLink[],
+  isUser: boolean,
   // inProgress: string[],
   // recommended: string[],
 ) {
@@ -27,10 +28,10 @@ export function renderLinks(
     .append("line")
     .attr("stroke", "var(--color-muted-foreground)")
     .attr("stroke-opacity", (d) => {
-      return d.flag ? 0.5 : 1;
+      return d.flag && isUser ? 0.5 : 1;
     })
     .attr("stroke-dasharray", (d) => {
-      return d.flag ? "4,2" : null;
+      return d.flag && isUser ? "4,2" : null;
       // TODO: debug
       // const isRecommended = recommendedLinks.includes(d.id);
       // console.log(isRecommended);

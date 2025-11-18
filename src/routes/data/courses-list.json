@@ -1,5 +1,12 @@
 {
-  "categories": ["Frontend", "Backend", "iOS", "Android", "Blockchain"],
+  "categories": [
+    "Programming",
+    "Frontend",
+    "Backend",
+    "iOS",
+    "Android",
+    "Blockchain"
+  ],
   "courses": [
     {
       "id": 1,

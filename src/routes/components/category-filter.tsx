@@ -12,7 +12,7 @@ export function CategoryFilter({
   onToggleCategory,
 }: CategoryFilterProps) {
   return (
-    <div className="space-x-2 flex flex-wrap -mt-2 max-sm:-ml-2  ">
+    <div className="space-x-2 flex flex-wrap -mt-2 max-sm:-ml-0.5">
       <span className="mr-2 mt-0.5 text-sm font-medium hidden sm:block">
         Filter by:
       </span>

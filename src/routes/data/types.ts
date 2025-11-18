@@ -76,6 +76,7 @@ export type NetworkGraphProps = {
     paths: CourseCategory[];
   };
   selectedCategories: string[];
+  isUser: boolean;
 };
 
 export type UserCourses = {
