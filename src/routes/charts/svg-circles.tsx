@@ -14,10 +14,10 @@ export function renderNodeCircles(
   const circles = nodeElements
     .append("circle")
     .attr("r", (d) =>
-      d.id.includes("p") ? NODE_RADIUS + d.size * 1.5 : NODE_RADIUS,
+      d.id.includes("p") ? NODE_RADIUS + d.size * 3 : NODE_RADIUS,
     )
     .attr("fill", (d) =>
-      completed.includes(d.id) ? paths[d.path[0] - 1].color : "#eee",
+      isUser && completed.includes(d.id) ? paths[d.path[0] - 1].color : "#eee",
     )
     .attr("stroke", (d) => paths[d.path[0] - 1].color)
     .attr("stroke-width", NODE_STROKE_WIDTH)

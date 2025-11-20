@@ -14,23 +14,16 @@ import { renderNodeTexts } from "./svg-texts";
 import { renderArrowMarker } from "./svg-marker-arrow";
 import { renderLinks } from "./svg-lines";
 import { generateRecommended } from "../data/users";
+import { useForceSimulation } from "./force-layout";
 
 // Graph dimensions and layout constants
 const GRAPH_WIDTH = 1024;
 const GRAPH_HEIGHT = 510;
-const GROUPED_SPACING = 32;
 const NODE_STROKE_WIDTH = 5;
-const DEFAULT_LINK_LENGTH = 100;
 const DEFAULT_LINK_WIDTH = 1;
 const WIDTH_MULTIPLIER = 1.5;
 const DIMMED_OPACITY = 0.2;
 const DEFAULT_OPACITY = 1;
-
-// Force layout transition
-const COLLISION_RADIUS_OFFSET = 1;
-const SIMULATION_VELOCITY_DECAY = 0.01;
-const SIMULATION_RESTART_ALPHA = 0.001;
-const ANIMATION_DELAY = 800;
 
 // Window resize and hover debounce
 const RESIZE_THRESHOLD = 1;
@@ -140,7 +133,7 @@ const NetworkGraph = ({
       .append("g");
 
     // Add circles to nodes with dynamic sizing and group-based colors
-    renderNodeCircles(nodeElements, isUser, completed, inProgress, paths); // Add labels to nodes positioned above the circles
+    renderNodeCircles(nodeElements, isUser, completed, inProgress, paths);
     // Add labels to nodes positioned above the circles
     renderNodeTexts(nodeElements, isUser, completed, inProgress, recommended);
 
@@ -241,58 +234,6 @@ const NetworkGraph = ({
       hoverDebouncer.onLeave(() => clearHighlight);
     };
 
-    // Set initial positions at center for animation effect
-    nodes.forEach((node) => {
-      node.x = width / 2;
-      node.y = height / 2;
-      // Don't set fixed positions initially for animation
-    });
-
-    const simulation = d3
-      .forceSimulation<CourseNode>(nodes)
-      .velocityDecay(SIMULATION_VELOCITY_DECAY) // Higher decay (default: 0.4) - smoother, less bouncy movement
-      .force(
-        "link",
-        d3
-          .forceLink<CourseNode, CourseLink>(links)
-          .id((d) => d.id)
-          .distance((d) => d.length || DEFAULT_LINK_LENGTH),
-      )
-      .force("center", d3.forceCenter(width / 2, height / 2))
-      .force(
-        "collision",
-        d3
-          .forceCollide()
-          .radius((d) => COLLISION_RADIUS_OFFSET + (d as CourseNode).size),
-      )
-      .on("tick", tick);
-
-    // After a delay, set fixed positions for animation effect
-    setTimeout(() => {
-      nodes.forEach((node) => {
-        // Get nodes center
-        const centerX = nodes.find((n) => n.id[1] === node.id[1])?.px || 1 / 2;
-        // Special handling for level course nodes
-        if (node.id.includes("c")) {
-          const group2Nodes = nodes.filter((n) => n.id.includes("c"));
-          const nodeIndex = group2Nodes.findIndex((n) => n.id === node.id);
-          const spacing = GROUPED_SPACING;
-          const totalWidth = (group2Nodes.length - 1) * spacing;
-          const startX = (width - totalWidth) * centerX;
-          node.fx = startX + nodeIndex * spacing;
-        }
-        // If node has custom x position (px), fix it horizontally
-        else if (node.px) {
-          node.fx = node.px * width;
-        }
-        // All nodes are fixed vertically based on their group
-        node.fy = paths[node.path[0] - 1].py * height; //id is index
-      });
-
-      // Restart with lower alpha for gentler transition
-      simulation.alpha(SIMULATION_RESTART_ALPHA).restart();
-    }, ANIMATION_DELAY);
-
     // Tick function called on each simulation step to update element positions
     function tick() {
       // Update link positions based on connected node positions
@@ -328,15 +269,24 @@ const NetworkGraph = ({
       voronoiSelection.update(handleMouseEnter, handleMouseLeave);
     }
 
+    // Initialize force simulation with extracted logic
+    const cleanupSimulation = useForceSimulation(
+      nodes,
+      links,
+      paths,
+      dimensions,
+      tick,
+    );
+
     // Apply category highlighting after everything is set up
     applyCategoryHighlight();
 
     // Cleanup function to stop simulation when component unmounts or dimensions change
     return () => {
-      simulation.stop();
+      cleanupSimulation();
       hoverDebouncer.cleanup();
     };
-  }, [dimensions, data, selectedCategories]);
+  }, [dimensions, data, selectedCategories, isUser]);
 
   // Render the container div and SVG element
   return (
@@ -348,7 +298,7 @@ const NetworkGraph = ({
       {/* Path description overlay */}
       <div
         id="path-description"
-        className="p3 absolute z-10 opacity-0 transition-opacity duration-200"
+        className="p3 absolute z-10 opacity-0 transition-opacity duration-200 pointer-events-none"
       ></div>
       <svg ref={svgRef} className="w-full h-full bg-grid" />
     </div>

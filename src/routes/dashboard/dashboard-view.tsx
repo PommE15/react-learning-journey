@@ -1,6 +1,6 @@
 import { Accordion } from "@/components/ui/accordion";
 import { arraysHaveCommonItem } from "@/src/utils/helper";
-import { Book, Clock } from "lucide-react";
+import { Book, Clock, Rocket } from "lucide-react";
 import React from "react";
 import { Link, useLoaderData, useSearchParams } from "react-router";
 import NetworkGraph from "../charts/network";
@@ -143,6 +143,22 @@ export function Dashboard() {
           <Clock className="ml-2 size-4" />
           <span>{totalTimeSpent} hours spent</span>
         </div>
+      </div>
+
+      <div className="bg-toast w-full p-4 rounded-2xl border border-gray-200">
+        <div className="flex justify-between mb-2">
+          <div className="flex">
+            <Rocket />
+            <span className="ml-2 text-base font-medium">
+              Your personalized roadmap and learning insights.
+            </span>
+          </div>
+          <div>X</div>
+        </div>
+        <p className="text-sm">
+          Scholé shows your learning journey with real insights, so you see
+          progress and places of improvement.
+        </p>
       </div>
 
       {/* Course Sections Accordion */}

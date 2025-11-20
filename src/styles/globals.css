@@ -214,6 +214,16 @@
     );
   }
 
+  .bg-toast {
+    background: linear-gradient(
+      90deg,
+      var(--Cards-colour-1, #f4f9ff) 0%,
+      var(--Cards-colour-2, #f5f4ff) 34.13%,
+      var(--Cards-colour-3, #fbf4ff) 70.19%,
+      var(--Cards-colour-4, #fff4f8) 100%
+    );
+  }
+
   .bg-grid {
     background-size: 24px 24px;
     background-image:
